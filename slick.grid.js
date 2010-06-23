@@ -63,6 +63,8 @@
  *     rerenderOnResize    - Rerender the column when it is resized (useful for columns relying on cell width or adaptive formatters).
  *     asyncPostRender     - Function responsible for manipulating the cell DOM node after it has been rendered (called in the background).
  *     behavior            - Configures the column with one of several available predefined behaviors:  "select", "move", "selectAndMove".
+ *	   SelectorHash		   - Selector Hash
+ 
  *
  *
  * EVENTS:
