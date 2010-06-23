@@ -7,10 +7,10 @@
         SelectorCellFormatter : function(row, cell, value, columnDef, dataContext) {
             return (!dataContext ? "" : row);
         },
-		
-		SelectorCellFormatter: function(row, cell, value, columnDef, dataContext){
-				return columnDef.selectorHash[value];
-		},
+
+        DropDownCellFormatter : function(row, cell, value, columnDef, dataContext) {
+            return columnDef.dataHash[value];
+        },
 
         PercentCompleteCellFormatter : function(row, cell, value, columnDef, dataContext) {
             if (value == null || value === "")
@@ -75,7 +75,6 @@
             var scope = this;
 
             this.init = function() {
-			console.log(args);
                 $input = $("<INPUT type=text class='editor-text' />")
                     .appendTo(args.container)
                     .bind("keydown.nav", function(e) {
@@ -121,6 +120,67 @@
                         return validationResults;
                 }
 
+                return {
+                    valid: true,
+                    msg: null
+                };
+            };
+
+            this.init();
+        },
+
+        DropDownCellEditor : function(args) {
+            var $input;
+            var defaultValue;
+            var scope = this;
+
+            this.init = function() {
+              var optionsHash = args.column.dataHash;
+              var options = [];
+              for (key in optionsHash){
+                options.push('<option value="'+ key +'">'+ optionsHash[key] +'</option>');
+              }
+              selectHtml = "<select class='drop-down-cell-select'>" + options.join() + "</select>";
+              options = null;
+              $input = $(selectHtml)
+                      .appendTo(args.container)
+                      .bind("keydown.nav", function(e) {
+                          if (e.keyCode === $.ui.keyCode.UP || e.keyCode === $.ui.keyCode.DOWN) {
+                              e.stopImmediatePropagation();
+                          }
+                      })
+                      .focus()
+                      .select();
+            };
+
+            this.destroy = function() {
+                $input.remove();
+            };
+
+            this.focus = function() {
+                $input.focus();
+            };
+
+            this.loadValue = function(item) {
+                defaultValue = item[args.column.field] || "";
+                $input.val(defaultValue);
+                $input[0].defaultValue = defaultValue;
+                $input.select();
+            };
+
+            this.serializeValue = function() {
+                return $input.val();
+            };
+
+            this.applyValue = function(item,state) {
+                item[args.column.field] = state;
+            };
+
+            this.isValueChanged = function() {
+                return (!($input.val() == "" && defaultValue == null)) && ($input.val() != defaultValue);
+            };
+
+            this.validate = function() {
                 return {
                     valid: true,
                     msg: null
@@ -604,87 +664,7 @@
             };
 
             this.init();
-        },
-		
-		 /*
-         * 
-         * 
-         * Selector Editot
-         */
-		 
-		  SelectorCellEditor : function(args) {
-            var $input;
-            var defaultValue;
-            var scope = this;
-
-            this.init = function() {
-			
-                /*$input = $("<INPUT type=text class='editor-text' />")
-                    .appendTo(args.container)
-                    .bind("keydown.nav", function(e) {
-                        if (e.keyCode === $.ui.keyCode.LEFT || e.keyCode === $.ui.keyCode.RIGHT) {
-                            e.stopImmediatePropagation();
-                        }
-                    })
-                    .focus()
-                    .select(); */
-					debugger;
-					var Hash = args.column.selectorHash;
-					var tmpArray = []; 
-					 for (x in Hash ){
-					tmpArray.push('<option value="'+ x +'">'+Hash[x]+'</option>');
-					}
-					
-					$input = $("<select>" + tmpArray.join() + "</select>");
-					
-					$input.appendTo(args.container)
-                    .bind("keydown.nav", function(e) {
-                        if (e.keyCode === $.ui.keyCode.LEFT || e.keyCode === $.ui.keyCode.RIGHT) {
-                            e.stopImmediatePropagation();
-                        }
-                    })
-                    .focus()
-                    .select();
-			};
-
-            this.destroy = function() {
-                $input.remove();
-            };
-
-            this.focus = function() {
-                $input.focus();
-            };
-
-            this.loadValue = function(item) {
-                defaultValue = item[args.column.field] || "";
-                $input.val(defaultValue);
-				$input[0].defaultValue = defaultValue;
-                $input.select();
-            };
-
-            this.serializeValue = function() {
-                return $input.val();
-            };
-
-            this.applyValue = function(item,state) {
-                item[args.column.field] = state;
-            };
-
-            this.isValueChanged = function() {
-                return (!($input.val() == "" && defaultValue == null)) && ($input.val() != defaultValue);
-            };
-
-            this.validate = function() {
-                 return {
-                    valid: true,
-                    msg: null
-                };
-            };
-
-            this.init();
         }
-
-		
 
     };
 
