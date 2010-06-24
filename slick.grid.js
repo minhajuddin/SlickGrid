@@ -2216,6 +2216,27 @@ if (!jQuery.fn.drag) {
 
         init();
 
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        // Custom functions for our grid
+
+        // add rows to the grid through javascript
+        // accepts a javascript object and adds it to the grid
+        function addRow(obj){
+          gridData.push(obj);
+          grid.updateRowCount();
+          grid.render();
+        }
+
+        // add rows to the grid through javascript
+        // accepts a javascript object array and adds it to the grid
+        function addRows(obj_array){
+          var i = 0;
+          for(; i <= obj_array.length; i++){
+            gridData.push(obj_array[i]);
+          }
+          grid.updateRowCount();
+          grid.render();
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
         // Public API
@@ -2286,6 +2307,10 @@ if (!jQuery.fn.drag) {
             "reorderColumns":      reorderColumns,
             "setSortColumn":       setSortColumn,
             "getCurrentCellPosition" : getCurrentCellPosition,
+
+            // Custom functions
+            "addRow" : addRow,
+            "addRows" : addRows,
 
             // IEditor implementation
             "getEditController":    getEditController
