@@ -110,6 +110,13 @@ if (!jQuery.fn.drag) {
     throw new Error("SlickGrid requires jquery.event.drag module to be loaded");
 }
 
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
 (function($) {
     var scrollbarDimensions; // shared across all grids on this page
 
@@ -2229,7 +2236,7 @@ if (!jQuery.fn.drag) {
         // accepts a javascript object array and adds it to the grid
         function addRows(obj_array){
           var i = 0;
-          for(; i <= obj_array.length; i++){
+          for(; i < obj_array.length; i++){
             gridData.push(obj_array[i]);
           }
           updateRowCount();
@@ -2237,21 +2244,13 @@ if (!jQuery.fn.drag) {
         }
 
         // delete row from the grid through javascript
-        // accepts a javascript object and removes it from the grid
-        //function deleteRow(obj){
-          //deleteRows([obj])
-        //}
-
-        //// delete rows from the grid through javascript
-        //// accepts a javascript object array and removes it from the grid
-        //function deleteRows(obj_array){
-          //var i = 0;
-          //for(; i <= obj_array.length; i++){
-            //gridData.push(obj_array[i]);
-          //}
-          //updateRowCount();
-          //render();
-        //}
+        // accepts a row index and removes it from the grid
+        function deleteRow(row){
+          gridData.remove(row);
+          removeRow(row);
+          updateRowCount();
+          render();
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
         // Public API
@@ -2326,6 +2325,7 @@ if (!jQuery.fn.drag) {
             // Custom functions
             "addRow" : addRow,
             "addRows" : addRows,
+            "deleteRow" : deleteRow,
 
             // IEditor implementation
             "getEditController":    getEditController
