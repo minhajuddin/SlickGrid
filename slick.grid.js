@@ -2222,9 +2222,7 @@ if (!jQuery.fn.drag) {
         // add rows to the grid through javascript
         // accepts a javascript object and adds it to the grid
         function addRow(obj){
-          gridData.push(obj);
-          grid.updateRowCount();
-          grid.render();
+          addRows([obj])
         }
 
         // add rows to the grid through javascript
@@ -2234,9 +2232,26 @@ if (!jQuery.fn.drag) {
           for(; i <= obj_array.length; i++){
             gridData.push(obj_array[i]);
           }
-          grid.updateRowCount();
-          grid.render();
+          updateRowCount();
+          render();
         }
+
+        // delete row from the grid through javascript
+        // accepts a javascript object and removes it from the grid
+        //function deleteRow(obj){
+          //deleteRows([obj])
+        //}
+
+        //// delete rows from the grid through javascript
+        //// accepts a javascript object array and removes it from the grid
+        //function deleteRows(obj_array){
+          //var i = 0;
+          //for(; i <= obj_array.length; i++){
+            //gridData.push(obj_array[i]);
+          //}
+          //updateRowCount();
+          //render();
+        //}
 
         //////////////////////////////////////////////////////////////////////////////////////////////
         // Public API
