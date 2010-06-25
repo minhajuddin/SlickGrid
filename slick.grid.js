@@ -2252,6 +2252,14 @@ Array.prototype.remove = function(from, to) {
           render();
         }
 
+		// update rows to the grid
+		// accepts a javascript object array and adds it to the grid
+		
+		function resetRows(obj_array){
+			setData(obj_array);
+			updateRowCount();
+			render();
+		}
         //////////////////////////////////////////////////////////////////////////////////////////////
         // Public API
 
@@ -2325,6 +2333,7 @@ Array.prototype.remove = function(from, to) {
             // Custom functions
             "addRow" : addRow,
             "addRows" : addRows,
+			"resetRows" : resetRows,
             "deleteRow" : deleteRow,
 
             // IEditor implementation
